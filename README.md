@@ -40,14 +40,14 @@ This separation improves clarity, testability, and scalability.
 
 A command represents an intention to change state. It is handled by a single handler and returns a result.
 
-📖 Read more → command.md
+📖 Read more → [command.md](https://github.com/bordunosp/bus/blob/master/doc/command.md)
 
 ---
 
 ## 🔍 Query
 A query retrieves data without modifying state. It is also handled by a single handler.
 
-📖 Read more → query.md
+📖 Read more → [query.md](https://github.com/bordunosp/bus/blob/master/doc/query.md)
 
 ---
 
@@ -58,8 +58,8 @@ In-memory — handled immediately during bus::publish(...)
 
 Database-backed — persisted and processed asynchronously by background workers
 
-* 📖 Read more → event.md
-* 📖 Database-backed events → event_database_sea_orm.md
+* 📖 Read more → [event.md](https://github.com/bordunosp/bus/blob/master/doc/event.md)
+* 📖 Database-backed events → [event_database_sea_orm.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_sea_orm.md)
 
 ---
 
@@ -87,7 +87,7 @@ Add `bus` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-bus = { git = "https://github.com/your-org/bus" }
+bus = { git = "https://github.com/bordunosp/bus" }
 ctor = "0.2" # Required for automatic handler & pipeline registration
 ```
 
@@ -109,6 +109,8 @@ All required migrations are located in the root of the repository under the migr
 ├── 2023_..._create_bus_events_archive.sql
 └── ...
 ```
+
+[migration](https://github.com/bordunosp/bus/blob/master/migration)
 
 You can apply them using your preferred migration tool (e.g. SeaORM CLI, refinery, sqlx-cli, or manually via psql/MySQL client).
 
@@ -141,14 +143,14 @@ You can apply them using your preferred migration tool (e.g. SeaORM CLI, refiner
 | Topic  | File                       |
 |:-------|:---------------------------|
 | 🧭 CQRS Overview       | this file                  |
-| 🔨 Commands       | command.md                 |
-| 🔍 Queries       | query.md                   |
-| 📣 Events (in-memory)       | event.md                   |
-| 🗃️ Events (database-backed)       | event_database_sea_orm.md  |
-| 🧩 Event Pipelines (in-memory)       | event_pipeline.md          |
-| 🧩 Event Pipelines (database)       | event_database_pipeline.md |
-| 🧩 Request Pipelines       | request_pipeline.md        |
-| 🛠 Migrations       | bus app folder migration   |
+| 🔨 Commands       | [command.md](https://github.com/bordunosp/bus/blob/master/doc/command.md)                 |
+| 🔍 Queries       | [query.md](https://github.com/bordunosp/bus/blob/master/doc/query.md)                   |
+| 📣 Events (in-memory)       | [event.md](https://github.com/bordunosp/bus/blob/master/doc/event.md)                   |
+| 🗃️ Events (database-backed)       | [event_database_sea_orm.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_sea_orm.md)  |
+| 🧩 Event Pipelines (in-memory)       | [event_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/event_pipeline.md)          |
+| 🧩 Event Pipelines (database)       | [event_database_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_pipeline.md) |
+| 🧩 Request Pipelines       | [request_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/request_pipeline.md)        |
+| 🛠 Migrations       | bus app folder [migration](https://github.com/bordunosp/bus/blob/master/migration)   |
 
 
 ---
