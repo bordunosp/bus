@@ -1,0 +1,5 @@
+# clippy.toml
+warns = ["clippy::all"]
+allow = [
+    "clippy::uninlined_format_args",
+]

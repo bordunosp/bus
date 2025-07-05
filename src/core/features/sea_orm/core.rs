@@ -62,7 +62,7 @@ impl DatabaseConnection {
             .chars()
             .all(|c| c.is_ascii_alphanumeric() || c == '_')
         {
-            return Err(BusError::InvalidTableName(dto.table_name.into()));
+            return Err(BusError::InvalidTableName(dto.table_name));
         }
 
         if !dto
@@ -71,13 +71,13 @@ impl DatabaseConnection {
             .chars()
             .all(|c| c.is_ascii_alphanumeric() || c == '_')
         {
-            return Err(BusError::InvalidTableName(dto.table_name_archive.into()));
+            return Err(BusError::InvalidTableName(dto.table_name_archive));
         }
 
         Ok(Self {
             sea_orm_connect_options: dto.sea_orm_connect_options.to_owned(),
-            table_name: dto.table_name.into(),
-            table_name_archive: dto.table_name_archive.into(),
+            table_name: dto.table_name,
+            table_name_archive: dto.table_name_archive,
         })
     }
 
@@ -111,11 +111,11 @@ impl DatabaseQueueConfiguration {
             ));
         }
         Ok(Self {
-            queue_name: dto.queue_name.into(),
-            workers: dto.workers.to_owned(),
-            batch_size: dto.batch_size.to_owned(),
-            sleep_interval: dto.sleep_interval.to_owned(),
-            archive_type: dto.archive_type.to_owned(),
+            queue_name: dto.queue_name,
+            workers: dto.workers,
+            batch_size: dto.batch_size,
+            sleep_interval: dto.sleep_interval,
+            archive_type: dto.archive_type,
         })
     }
 
