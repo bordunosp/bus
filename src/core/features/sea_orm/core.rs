@@ -1,8 +1,11 @@
 use crate::core::error_bus::BusError;
 use crate::core::features::sea_orm::dto::{DatabaseConnectionDto, DatabaseQueueConfigurationDto};
-use sea_orm::{ConnectOptions, DbErr, Iden};
+use sea_orm::{ConnectOptions, DbErr};
 use std::fmt;
 use std::time::Duration;
+
+#[allow(unused_imports)]
+use sea_orm::Iden;
 
 #[derive(Clone, Debug, PartialEq)]
 pub enum ArchiveType {
@@ -55,6 +58,7 @@ pub struct DatabaseConnection {
 }
 
 impl DatabaseConnection {
+    #[allow(clippy::new_without_default)]
     pub fn new(dto: DatabaseConnectionDto) -> Result<Self, BusError> {
         if !dto
             .table_name

@@ -21,6 +21,7 @@ pub(crate) async fn process_batch(
 use crate::core::features::sea_orm::workers_process::process_batch;
 
 struct WorkerContext {
+    #[allow(dead_code)]
     pub queue_name: String,
     shutdown_rx: watch::Receiver<()>,
 }
@@ -64,7 +65,7 @@ impl DatabaseWorkerController {
 
     fn spawn_background_worker<F, Fut>(
         &self,
-        name: &'static str,
+        _name: &'static str,
         sleep_duration: Duration,
         mut shutdown_rx: watch::Receiver<()>,
         task_fn: F,
@@ -77,13 +78,13 @@ impl DatabaseWorkerController {
         let handles = self.handles.clone();
         let handle = tokio::spawn(async move {
             #[cfg(feature = "logging")]
-            log::info!("Bus. Background worker '{}' started", name);
+            log::info!("Bus. Background worker '{}' started", _name);
 
             loop {
                 tokio::select! {
                     _ = shutdown_rx.changed() => {
                         #[cfg(feature = "logging")]
-                        log::info!("Bus. Background worker '{}' shutting down", name);
+                        log::info!("Bus. Background worker '{}' shutting down", _name);
                         break;
                     }
                     result = task_fn() => {
@@ -96,9 +97,9 @@ impl DatabaseWorkerController {
                                     }
                                 }
                             }
-                            Err(e) => {
+                            Err(_e) => {
                                 #[cfg(feature = "logging")]
-                                log::error!("Bus. Error in '{}': {}", name, e);
+                                log::error!("Bus. Error in '{}': {}", _name, _e);
                                 tokio::select! {
                                     _ = shutdown_rx.changed() => break,
                                     _ = tokio::time::sleep(Duration::from_secs(600)) => {}
@@ -149,7 +150,7 @@ impl DatabaseWorkerController {
                 queue.queue_name()
             );
 
-            for i in 0..workers {
+            for _i in 0..workers {
                 let queue_clone = queue.clone();
                 let handles = self.handles.clone();
                 let shutdown_rx = self.shutdown_tx.subscribe();
@@ -159,7 +160,7 @@ impl DatabaseWorkerController {
                     #[cfg(feature = "logging")]
                     log::info!(
                         "Bus. Worker #{} for '{}' started",
-                        i + 1,
+                        _i + 1,
                         ctx.queue_name.to_string()
                     );
 
@@ -179,9 +180,9 @@ impl DatabaseWorkerController {
                                             }
                                         }
                                     }
-                                    Err(e) => {
+                                    Err(_e) => {
                                         #[cfg(feature = "logging")]
-                                        log::error!("Bus. Worker error on '{}': {}", ctx.queue_name.to_string(), e);
+                                        log::error!("Bus. Worker error on '{}': {}", ctx.queue_name.to_string(), _e);
                                         if ctx.wait_or_shutdown(queue_clone.sleep_interval() * 2).await {
                                             break;
                                         }

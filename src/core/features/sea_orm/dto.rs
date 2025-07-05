@@ -43,12 +43,18 @@ pub(crate) struct BusEvent {
 
 pub(crate) struct BusEventJob {
     pub(crate) id: Uuid,
+
+    #[cfg_attr(test, allow(dead_code))]
     pub(crate) type_name_event: String,
     pub(crate) type_name_handler: String,
+
+    #[cfg_attr(test, allow(dead_code))]
     pub(crate) payload_bin: Vec<u8>,
     pub(crate) retries_current: i32,
     pub(crate) retries_max: i32,
     pub(crate) archive_mode: ArchiveType,
+
+    #[cfg_attr(test, allow(dead_code))]
     pub(crate) expires_interval: std::time::Duration,
 }
 

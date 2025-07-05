@@ -13,6 +13,8 @@ use std::error::Error;
 use uuid::Uuid;
 
 pub(crate) async fn get_expires() -> Result<Vec<BusEventJob>, Box<dyn Error + Send + Sync>> {
+    let table_name = get_queue_config()?.connection().table_name();
+
     let query = Statement::from_sql_and_values(
         sea_orm::DatabaseBackend::Postgres,
         format!(
@@ -26,8 +28,7 @@ pub(crate) async fn get_expires() -> Result<Vec<BusEventJob>, Box<dyn Error + Se
               AND expires_at > $2
             ORDER BY expires_at ASC
             LIMIT 10
-            "#,
-            table_name = get_queue_config()?.connection().table_name().to_string()
+            "#
         ),
         vec![
             Value::String(Some(Box::new(EventStatusEnum::Processing.to_string()))),
@@ -65,6 +66,8 @@ pub(crate) async fn get_expires() -> Result<Vec<BusEventJob>, Box<dyn Error + Se
 pub(crate) async fn get_id_status(
     status: EventStatusEnum,
 ) -> Result<Vec<IdArchiveJob>, Box<dyn Error + Send + Sync>> {
+    let table_name = get_queue_config()?.connection().table_name();
+
     get_db_conn()?
         .query_all(Statement::from_sql_and_values(
             sea_orm::DatabaseBackend::Postgres,
@@ -74,8 +77,7 @@ pub(crate) async fn get_id_status(
                 FROM {table_name}
                 WHERE status = $1::bus_events_status_enum
                 LIMIT 10
-                "#,
-                table_name = get_queue_config()?.connection().table_name().to_string()
+                "#
             ),
             vec![Value::String(Some(Box::new(status.to_string())))],
         ))
@@ -94,13 +96,12 @@ pub(crate) async fn get_id_status(
 }
 
 pub(crate) async fn delete(id: Uuid) -> Result<(), Box<dyn Error + Send + Sync>> {
+    let table_name = get_queue_config()?.connection().table_name();
+
     get_db_conn()?
         .execute(Statement::from_sql_and_values(
             DbBackend::Postgres,
-            format!(
-                r#"DELETE FROM {table_name} WHERE id = $1;"#,
-                table_name = get_queue_config()?.connection().table_name().to_string()
-            ),
+            format!(r#"DELETE FROM {table_name} WHERE id = $1;"#),
             vec![Value::Uuid(Some(Box::new(id)))],
         ))
         .await?;
@@ -112,6 +113,8 @@ pub(crate) async fn update_scheduled_at(
     scheduled_at: chrono::Duration,
     err: Box<dyn Error + Send + Sync>,
 ) -> Result<(), Box<dyn Error + Send + Sync>> {
+    let table_name = get_queue_config()?.connection().table_name();
+
     get_db_conn()?
         .execute(Statement::from_sql_and_values(
             DbBackend::Postgres,
@@ -125,8 +128,7 @@ pub(crate) async fn update_scheduled_at(
                     should_start_at = $4,
                     updated_at = (NOW() AT TIME ZONE 'UTC')
                 WHERE id = $5
-                "#,
-                table_name = get_queue_config()?.connection().table_name().to_string()
+                "#
             ),
             vec![
                 Value::String(Some(Box::new(EventStatusEnum::Pending.to_string()))),
@@ -144,11 +146,8 @@ pub(crate) async fn update_scheduled_at(
 pub(crate) async fn archive(id: Uuid) -> Result<(), BusError> {
     let db = get_db_conn()?;
     let txn = db.begin().await?;
-    let table_name = get_queue_config()?.connection().table_name().to_string();
-    let table_name_archive = get_queue_config()?
-        .connection()
-        .table_name_archive()
-        .to_string();
+    let table_name = get_queue_config()?.connection().table_name();
+    let table_name_archive = get_queue_config()?.connection().table_name_archive();
 
     let select_stmt = Statement::from_sql_and_values(
         DbBackend::Postgres,
@@ -159,8 +158,7 @@ pub(crate) async fn archive(id: Uuid) -> Result<(), BusError> {
               status::TEXT AS status, payload_json, payload_bin, latest_error, updated_at
             FROM {table_name}
             WHERE id = $1
-            "#,
-            table_name = table_name
+            "#
         ),
         vec![Value::Uuid(Some(Box::new(id)))],
     );
@@ -203,12 +201,11 @@ pub(crate) async fn archive(id: Uuid) -> Result<(), BusError> {
         DbBackend::Postgres,
         format!(
             r#"
-            INSERT INTO {table_name} (
+            INSERT INTO {table_name_archive} (
                 id, queue_name, type_name_event, type_name_handler, 
                 status, payload_json, payload_bin, latest_error, created_at
             ) VALUES ($1, $2, $3, $4, $5::bus_events_status_archive_enum, $6, $7, $8, $9)
-            "#,
-            table_name = table_name_archive
+            "#
         ),
         vec![
             Value::Uuid(Some(Box::new(event_archive.id.to_owned()))),
@@ -227,10 +224,7 @@ pub(crate) async fn archive(id: Uuid) -> Result<(), BusError> {
 
     let delete_stmt = Statement::from_sql_and_values(
         DbBackend::Postgres,
-        format!(
-            r#"DELETE FROM {table_name} WHERE id = $1"#,
-            table_name = table_name
-        ),
+        format!(r#"DELETE FROM {table_name} WHERE id = $1"#),
         vec![Value::Uuid(Some(Box::new(id)))],
     );
 
@@ -244,13 +238,14 @@ pub(crate) async fn change_status(
     status: EventStatusEnum,
     err: Option<Box<dyn Error + Send + Sync>>,
 ) -> Result<(), BusError> {
+    let table_name = get_queue_config()?.connection().table_name();
+
     let mut sql = format!(
         r#"
         UPDATE {table_name}
         SET status = $1::bus_events_status_enum,
             updated_at = (NOW() AT TIME ZONE 'UTC')
-        "#,
-        table_name = get_queue_config()?.connection().table_name().to_string()
+        "#
     );
 
     let mut values: Vec<Value> = vec![Value::String(Some(Box::new(status.to_string())))];
@@ -271,12 +266,13 @@ pub(crate) async fn change_status(
     Ok(())
 }
 
+#[cfg_attr(test, allow(dead_code))]
 pub(crate) async fn get_queues_items(
     queue_config: &DatabaseQueueConfiguration,
 ) -> Result<Vec<BusEventJob>, BusError> {
     let now = Utc::now().naive_utc();
     let limit = queue_config.batch_size();
-    let table_name = get_queue_config()?.connection().table_name().to_string();
+    let table_name = get_queue_config()?.connection().table_name();
 
     let query = Statement::from_sql_and_values(
         sea_orm::DatabaseBackend::Postgres,
@@ -310,8 +306,7 @@ pub(crate) async fn get_queues_items(
                 {table_name}.archive_mode::TEXT,
                 {table_name}.expires_at,
                 EXTRACT(EPOCH FROM {table_name}.expires_interval)::BIGINT AS expires_interval
-            "#,
-            table_name = table_name
+            "#
         ),
         vec![
             Value::String(Some(Box::new(queue_config.queue_name().to_string()))),
@@ -353,6 +348,7 @@ pub(crate) async fn insert_to_events(
     bus_event: BusEvent,
 ) -> Result<(), BusError> {
     let db_config = get_queue_config()?;
+    let table_name = db_config.connection().table_name();
 
     let payload_json_value = {
         #[cfg(feature = "json-payload")]
@@ -379,8 +375,7 @@ pub(crate) async fn insert_to_events(
               $6, $7, $8, $9, $10, $11::bus_events_archive_mode_enum,
               $12, $13, $14::interval, $15, $16
             )
-            "#,
-            table_name = db_config.connection().table_name().to_string()
+            "#
         ),
         vec![
             Value::Uuid(Some(Box::new(bus_event.id.to_owned()))),

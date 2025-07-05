@@ -143,9 +143,7 @@ where
     }
 
     while let Some(result) = futures.next().await {
-        if let Err(e) = result {
-            return Err(e);
-        }
+        result?;
     }
 
     Ok(())
@@ -172,10 +170,8 @@ where
         })
     });
 
-    handlers
-        .entry(event_type_name)
-        .or_insert_with(Vec::new)
-        .push(erased);
+    handlers.entry(event_type_name).or_default().push(erased);
+
     Ok(())
 }
 

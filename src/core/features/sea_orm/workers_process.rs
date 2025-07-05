@@ -13,6 +13,7 @@ use std::error::Error;
 use std::sync::Arc;
 use tokio::time::timeout;
 
+#[cfg_attr(test, allow(dead_code))]
 pub(crate) async fn process_batch(
     queue: &DatabaseQueueConfiguration,
 ) -> Result<bool, Box<dyn Error + Send + Sync>> {
@@ -41,72 +42,74 @@ pub(crate) async fn process_batch(
     Ok(is_empty_queue)
 }
 
+#[cfg_attr(test, allow(dead_code))]
 async fn process_completed(dto: &BusEventJob) {
-    if let Err(err) = sql::change_status(dto.id.clone(), EventStatusEnum::Completed, None).await {
+    if let Err(_err) = sql::change_status(dto.id.clone(), EventStatusEnum::Completed, None).await {
         #[cfg(feature = "logging")]
         log::error!(
             "Failed to mark event as completed id: '{}' err: {}",
             dto.id.clone().to_string(),
-            err
+            _err
         );
     }
 
     match dto.archive_mode {
         ArchiveType::All | ArchiveType::Completed => {
-            if let Err(err) = sql::archive(dto.id.clone()).await {
+            if let Err(_err) = sql::archive(dto.id.clone()).await {
                 #[cfg(feature = "logging")]
                 log::error!(
                     "Failed to archive event id: '{}' err: {}",
                     dto.id.clone().to_string(),
-                    err
+                    _err
                 );
             }
         }
         ArchiveType::None | ArchiveType::Failed => {
-            if let Err(err) = sql::delete(dto.id.clone()).await {
+            if let Err(_err) = sql::delete(dto.id.clone()).await {
                 #[cfg(feature = "logging")]
                 log::error!(
                     "Failed to delete event id: '{}' err: {}",
                     dto.id.clone().to_string(),
-                    err
+                    _err
                 );
             }
         }
     }
 }
 
+#[allow(dead_code)]
 pub(crate) async fn process_failed(dto: &BusEventJob, err: Box<dyn Error + Send + Sync>) {
     if (dto.retries_current + 1) >= dto.retries_max {
-        if let Err(err) =
+        if let Err(_err) =
             sql::change_status(dto.id.clone(), EventStatusEnum::Failed, Some(err)).await
         {
             #[cfg(feature = "logging")]
             log::error!(
                 "Failed to mark event as Failed id: '{}' err: {}",
                 dto.id.clone().to_string(),
-                err
+                _err
             );
             return;
         }
 
         match dto.archive_mode {
             ArchiveType::All | ArchiveType::Failed => {
-                if let Err(err) = sql::archive(dto.id.clone()).await {
+                if let Err(_err) = sql::archive(dto.id.clone()).await {
                     #[cfg(feature = "logging")]
                     log::error!(
                         "Failed to archive event id: '{}' err: {}",
                         dto.id.clone().to_string(),
-                        err
+                        _err
                     );
                 }
             }
             ArchiveType::None | ArchiveType::Completed => {
-                if let Err(err) = sql::delete(dto.id.clone()).await {
+                if let Err(_err) = sql::delete(dto.id.clone()).await {
                     #[cfg(feature = "logging")]
                     log::error!(
                         "Failed to delete event id: '{}' err: {}",
                         dto.id.clone().to_string(),
-                        err
+                        _err
                     );
                 }
             }
@@ -135,6 +138,7 @@ pub(crate) async fn process_failed(dto: &BusEventJob, err: Box<dyn Error + Send 
     }
 }
 
+#[cfg_attr(test, allow(dead_code))]
 pub(crate) async fn process_item(dto: &BusEventJob) -> Result<(), Box<dyn Error + Send + Sync>> {
     // 1. Deserialize event from binary payload
     let event_factory = event_from_bin()

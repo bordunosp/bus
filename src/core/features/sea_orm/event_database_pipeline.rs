@@ -22,6 +22,7 @@ pub(crate) fn register_event_database_pipeline(
         .push(Arc::new(factory));
 }
 
+#[cfg_attr(test, allow(dead_code))]
 pub(crate) struct DatabasePipelineWrapper {
     pub pipeline: Arc<dyn IEventDatabasePipeline>,
     pub next: Arc<dyn IErasedEventHandlerDatabase>,

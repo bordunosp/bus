@@ -19,6 +19,7 @@ use std::pin::Pin;
 use std::sync::Arc;
 use uuid::Uuid;
 
+#[cfg_attr(test, allow(dead_code))]
 pub(crate) struct HandlerRegistration {
     pub(crate) factory: Arc<AsyncEventDbFactory>,
     pub(crate) settings: EventQueueSettings,
