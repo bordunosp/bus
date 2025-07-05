@@ -1,0 +1,67 @@
+name: Rust CI
+
+on:
+  push:
+    branches: [ "main" ]
+  pull_request:
+    branches: [ "main" ]
+
+env:
+  CARGO_TERM_COLOR: always
+
+jobs:
+  build:
+    runs-on: ubuntu-latest
+
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+      - name: Cache Cargo dependencies
+        uses: actions/cache@v4
+        with:
+          path: |
+            ~/.cargo/registry
+            ~/.cargo/git
+            target
+          key: ${{ runner.os }}-cargo-${{ hashFiles('**/Cargo.lock') }}
+          restore-keys: |
+            ${{ runner.os }}-cargo-
+      - name: Build
+        run: cargo build --verbose
+      - name: Run test default
+        run: cargo test-default
+      - name: Run test test-pg-1
+        run: cargo test-pg-1
+      - name: Run test test-pg-2
+        run: cargo test-pg-2
+      - name: Run test test-pg-3
+        run: cargo test-pg-3
+      - name: Run test test-pg-4
+        run: cargo test-pg-4
+      - name: Run test test-mysql-1
+        run: cargo test-mysql-1
+      - name: Run test test-mysql-2
+        run: cargo test-mysql-2
+      - name: Run test test-mysql-3
+        run: cargo test-mysql-3
+      - name: Run test test-mysql-4
+        run: cargo test-mysql-4
+
+  # You can add a job for Clippy (linter) and Rustfmt (formatter) as well
+  lint:
+    runs-on: ubuntu-latest
+    steps:
+      - uses: actions/checkout@v4
+      - name: Install Rust toolchain
+        uses: dtolnay/rust-toolchain@stable
+        with:
+          toolchain: stable
+          components: rustfmt, clippy
+      - name: Run Clippy
+        run: cargo clippy -- -D warnings
+      - name: Run Rustfmt
+        run: cargo fmt --check

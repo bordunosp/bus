@@ -1,6 +1,9 @@
 # 🚌 bus — Lightweight CQRS Framework for Rust
 
-#### `bus` is a modular, async-first CQRS framework for Rust that helps you structure your application around clear boundaries: `Commands`, `Queries`, and `Events`. It supports both in-memory and database-backed event processing, middleware pipelines, and graceful shutdown — all with minimal boilerplate.
+####
+`bus` is a modular, async-first CQRS framework for Rust that helps you structure your application around clear boundaries:
+`Commands`, `Queries`, and
+`Events`. It supports both in-memory and database-backed event processing, middleware pipelines, and graceful shutdown — all with minimal boilerplate.
 
 ---
 
@@ -10,7 +13,6 @@
 * ❌ Scattered side effects and background jobs
 * ❌ No clear separation between commands, queries, and events
 * ❌ Manual registration of handlers and middleware
-
 
 ## ✅ `bus` introduces a clean, extensible architecture for:
 
@@ -29,7 +31,7 @@
 * **Commands** — operations that change state (e.g. CreateUser)
 * **Queries** — operations that return data (e.g. GetUserById)
 * **Events** — notifications that something happened (e.g. UserCreated)
-  
+
 This separation improves clarity, testability, and scalability.
 
 ---
@@ -45,6 +47,7 @@ A command represents an intention to change state. It is handled by a single han
 ---
 
 ## 🔍 Query
+
 A query retrieves data without modifying state. It is also handled by a single handler.
 
 📖 Read more → [query.md](https://github.com/bordunosp/bus/blob/master/doc/query.md)
@@ -52,6 +55,7 @@ A query retrieves data without modifying state. It is also handled by a single h
 ---
 
 ## 📣 Event
+
 An event represents something that has already happened. It can be:
 
 In-memory — handled immediately during bus::publish(...)
@@ -59,7 +63,8 @@ In-memory — handled immediately during bus::publish(...)
 Database-backed — persisted and processed asynchronously by background workers
 
 * 📖 Read more → [event.md](https://github.com/bordunosp/bus/blob/master/doc/event.md)
-* 📖 Database-backed events → [event_database_sea_orm.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_sea_orm.md)
+* 📖 Database-backed
+  events → [event_database_sea_orm.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_sea_orm.md)
 
 ---
 
@@ -75,9 +80,9 @@ You can wrap handlers with composable pipelines for:
 
 Supported for:
 
-* In-memory events → event_pipeline.md
-* Database-backed events → event_database_pipeline.md
-* Requests (commands/queries) → request_pipeline.md
+* In-memory events → [event_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/event_pipeline.md)
+* Database-backed events → [event_database_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_pipeline.md)
+* Requests (commands/queries) → [request_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/request_pipeline.md)
 
 ---
 
@@ -93,13 +98,15 @@ ctor = "0.2" # Required for automatic handler & pipeline registration
 
 **Why `ctor`?**
 
-`bus` uses the `ctor` crate to automatically register handlers and pipelines at startup. Without it, nothing will be wired up.
+`bus` uses the `ctor` crate to automatically register handlers and pipelines at startup. Without it, nothing will be
+wired up.
 
 ---
 
 ## 📦 Migrations for Database Events
 
-If you're using database-backed events with SeaORM, you must apply the required database migrations before running workers.
+If you're using database-backed events with SeaORM, you must apply the required database migrations before running
+workers.
 
 All required migrations are located in the root of the repository under the migration/ directory:
 
@@ -112,7 +119,8 @@ All required migrations are located in the root of the repository under the migr
 
 [migration](https://github.com/bordunosp/bus/blob/master/migration)
 
-You can apply them using your preferred migration tool (e.g. SeaORM CLI, refinery, sqlx-cli, or manually via psql/MySQL client).
+You can apply them using your preferred migration tool (e.g. SeaORM CLI, refinery, sqlx-cli, or manually via psql/MySQL
+client).
 
 ---
 
@@ -138,26 +146,27 @@ You can apply them using your preferred migration tool (e.g. SeaORM CLI, refiner
 
 # 📚 Documentation Index
 
-
-
-| Topic  | File                       |
-|:-------|:---------------------------|
-| 🧭 CQRS Overview       | this file                  |
-| 🔨 Commands       | [command.md](https://github.com/bordunosp/bus/blob/master/doc/command.md)                 |
-| 🔍 Queries       | [query.md](https://github.com/bordunosp/bus/blob/master/doc/query.md)                   |
-| 📣 Events (in-memory)       | [event.md](https://github.com/bordunosp/bus/blob/master/doc/event.md)                   |
-| 🗃️ Events (database-backed)       | [event_database_sea_orm.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_sea_orm.md)  |
-| 🧩 Event Pipelines (in-memory)       | [event_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/event_pipeline.md)          |
-| 🧩 Event Pipelines (database)       | [event_database_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_pipeline.md) |
-| 🧩 Request Pipelines       | [request_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/request_pipeline.md)        |
-| 🛠 Migrations       | bus app folder [migration](https://github.com/bordunosp/bus/blob/master/migration)   |
-
+| Topic                          | File                                                                                                      |
+|:-------------------------------|:----------------------------------------------------------------------------------------------------------|
+| 🧭 CQRS Overview               | this file                                                                                                 |
+| 🔨 Commands                    | [command.md](https://github.com/bordunosp/bus/blob/master/doc/command.md)                                 |
+| 🔍 Queries                     | [query.md](https://github.com/bordunosp/bus/blob/master/doc/query.md)                                     |
+| 📣 Events (in-memory)          | [event.md](https://github.com/bordunosp/bus/blob/master/doc/event.md)                                     |
+| 🗃️ Events (database-backed)   | [event_database_sea_orm.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_sea_orm.md)   |
+| 🧩 Event Pipelines (in-memory) | [event_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/event_pipeline.md)                   |
+| 🧩 Event Pipelines (database)  | [event_database_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/event_database_pipeline.md) |
+| 🧩 Request Pipelines           | [request_pipeline.md](https://github.com/bordunosp/bus/blob/master/doc/request_pipeline.md)               |
+| 🛠 Migrations                  | bus app folder [migration](https://github.com/bordunosp/bus/blob/master/migration)                        |
 
 ---
 
 # #StandForUkraine 🇺🇦
 
-This project aims to show support for Ukraine and its people amidst a war that has been ongoing since 2014. This war has a genocidal nature and has led to the deaths of thousands, injuries to millions, and significant property damage. We believe that the international community should focus on supporting Ukraine and ensuring security and freedom for its people.
+This project aims to show support for Ukraine and its people amidst a war that has been ongoing since 2014. This war has
+a genocidal nature and has led to the deaths of thousands, injuries to millions, and significant property damage. We
+believe that the international community should focus on supporting Ukraine and ensuring security and freedom for its
+people.
 
-Join us and show your support using the hashtag #StandForUkraine. Together, we can help bring attention to the issues faced by Ukraine and provide aid.
+Join us and show your support using the hashtag #StandForUkraine. Together, we can help bring attention to the issues
+faced by Ukraine and provide aid.
 
