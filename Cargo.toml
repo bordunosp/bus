@@ -1,0 +1,68 @@
+[package]
+name = "bus"
+version = "0.1.0"
+edition = "2024"
+
+[dependencies]
+bus_macros = { path = "./bus_macros" }
+async-trait = "0.1"
+tokio = { version = "1.46", features = ["rt", "macros"] }
+dashmap = "7.0.0-rc2"
+once_cell = "1.21"
+thiserror = "2.0"
+chrono = "0.4"
+futures = "0.3"
+parking_lot = "0.12"
+serde = { version = "1.0", features = ["derive"] }
+
+# optional
+sea-orm = { version = "1.1.13", optional = true, default-features = false, features = [
+    "runtime-tokio-rustls",
+    "with-json",
+    "with-uuid",
+    "with-chrono",
+] }
+uuid = { version = "1.17", optional = true, features = ["v7", "zerocopy", "fast-rng", "bytemuck", "std", "atomic"] }
+postcard = { version = "1.1", optional = true, features = ["alloc", "use-std"] }
+log = { version = "0.4", optional = true }
+serde_json = { version = "1.0", optional = true }
+tokio-util = { version = "0.7", optional = true }
+
+
+[dev-dependencies]
+sea-orm = { version = "1.1.13", default-features = false, features = [
+    "runtime-tokio-rustls",
+    "with-json",
+    "with-uuid",
+    "with-chrono",
+    "mock",
+] }
+
+
+
+
+[features]
+default = [
+        "logging",
+    #    "json-payload",
+        "sea-orm-postgres",
+    #    "cancellation-token",
+]
+
+logging = ["log"]
+json-payload = ["serde_json"]
+cancellation-token = ["tokio-util"]
+
+sea-orm-postgres = [
+    "sea-orm",
+    "sea-orm/sqlx-postgres",
+    "uuid",
+    "postcard",
+]
+sea-orm-mysql = [
+    "sea-orm",
+    "sea-orm/sqlx-mysql",
+    "uuid",
+    "postcard",
+]
+

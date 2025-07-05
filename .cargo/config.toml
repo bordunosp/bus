@@ -1,0 +1,12 @@
+[alias]
+test-default = """test --no-default-features -- --test-threads=1"""
+
+test-pg-1 = """test --no-default-features --features sea-orm-postgres -- --test-threads=1"""
+test-pg-2 = """test --no-default-features --features sea-orm-postgres,logging -- --test-threads=1"""
+test-pg-3 = """test --no-default-features --features sea-orm-postgres,logging,json-payload -- --test-threads=1"""
+test-pg-4 = """test --no-default-features --features sea-orm-postgres,logging,json-payload,cancellation-token -- --test-threads=1"""
+
+test-mysql-1 = """test --no-default-features --features sea-orm-mysql -- --test-threads=1"""
+test-mysql-2 = """test --no-default-features --features sea-orm-mysql,logging -- --test-threads=1"""
+test-mysql-3 = """test --no-default-features --features sea-orm-mysql,logging,json-payload -- --test-threads=1"""
+test-mysql-4 = """test --no-default-features --features sea-orm-mysql,logging,json-payload,cancellation-token -- --test-threads=1"""
