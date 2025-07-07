@@ -1,7 +1,7 @@
-# 🚌 bus — Lightweight CQRS Framework for Rust
+# 🚌 bus — Lightweight CQRS Library for Rust
 
 ####
-`bus` is a modular, async-first CQRS framework for Rust that helps you structure your application around clear boundaries:
+`bus` is a modular, async-first CQRS library for Rust that helps you structure your application around clear boundaries:
 `Commands`, `Queries`, and
 `Events`. It supports both in-memory and database-backed event processing, middleware pipelines, and graceful shutdown — all with minimal boilerplate.
 
