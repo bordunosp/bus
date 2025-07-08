@@ -183,7 +183,7 @@ checksum = "793db76d6187cd04dff33004d8e6c9cc4e05cd330500379d2394209271b4aeee"
 
 [[package]]
 name = "bus"
-version = "1.0.0"
+version = "1.0.1"
 dependencies = [
  "async-trait",
  "bus_macros",
@@ -206,6 +206,8 @@ dependencies = [
 [[package]]
 name = "bus_macros"
 version = "1.0.0"
+source = "registry+https://github.com/rust-lang/crates.io-index"
+checksum = "8f776c697b8a6d4e567872b4bc8759d2a5af73bf733bac6b5747ec77dd3c62f5"
 dependencies = [
  "ctor",
  "proc-macro2",

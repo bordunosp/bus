@@ -1,6 +1,6 @@
 [package]
 name = "bus"
-version = "1.0.0"
+version = "1.0.1"
 edition = "2024"
 readme = "README.md"
 license = "MIT"
@@ -9,7 +9,7 @@ repository = "https://github.com/bordunosp/bus"
 description = "bus — Lightweight CQRS Library for Rust"
 
 [dependencies]
-bus_macros = { path = "./bus_macros", version = "0.1.0" }
+bus_macros = "1.0.0"
 async-trait = "0.1"
 tokio = { version = "1.46", features = ["rt", "macros"] }
 dashmap = "7.0.0-rc2"

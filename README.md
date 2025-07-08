@@ -92,7 +92,7 @@ Add `bus` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-bus = { git = "https://github.com/bordunosp/bus" }
+bus = { package = "bus", version = "" }
 ctor = "0.4" # Required for automatic handler & pipeline registration
 ```
 
