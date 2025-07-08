@@ -2,8 +2,11 @@
 name = "bus"
 version = "1.0.0"
 edition = "2024"
+readme = "README.md"
+license = "MIT"
 authors = ["Bordunos Pavel <bordunos.p@gmail.com>"]
 repository = "https://github.com/bordunosp/bus"
+description = "bus — Lightweight CQRS Library for Rust"
 
 [dependencies]
 bus_macros = { path = "./bus_macros" }
