@@ -1,7 +1,6 @@
 #![doc = "bus — Lightweight CQRS Library for Rust"]
 extern crate self as bus;
 
-
 pub mod core;
 pub mod registry;
 
