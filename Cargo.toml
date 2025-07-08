@@ -7,6 +7,14 @@ license = "MIT"
 authors = ["Bordunos Pavel <bordunos.p@gmail.com>"]
 repository = "https://github.com/bordunosp/bus"
 description = "bus — Lightweight CQRS Library for Rust"
+keywords = ["bus", "CQRS", "Command", "Query", "Event"]
+categories = [
+    "concurrency",
+    "config",
+    "data-structures",
+    "database",
+    "web-programming"
+]
 
 [dependencies]
 bus_macros = "1.0.0"
