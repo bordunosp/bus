@@ -1,5 +1,5 @@
 [package]
-name = "bus"
+name = "rust_bus"
 version = "1.0.1"
 edition = "2024"
 readme = "README.md"

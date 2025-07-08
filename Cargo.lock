@@ -182,28 +182,6 @@ source = "registry+https://github.com/rust-lang/crates.io-index"
 checksum = "793db76d6187cd04dff33004d8e6c9cc4e05cd330500379d2394209271b4aeee"
 
 [[package]]
-name = "bus"
-version = "1.0.1"
-dependencies = [
- "async-trait",
- "bus_macros",
- "chrono",
- "dashmap",
- "futures",
- "log",
- "once_cell",
- "parking_lot",
- "postcard",
- "sea-orm",
- "serde",
- "serde_json",
- "thiserror",
- "tokio",
- "tokio-util",
- "uuid",
-]
-
-[[package]]
 name = "bus_macros"
 version = "1.0.0"
 source = "registry+https://github.com/rust-lang/crates.io-index"
@@ -1404,6 +1382,28 @@ dependencies = [
  "spki",
  "subtle",
  "zeroize",
+]
+
+[[package]]
+name = "rust_bus"
+version = "1.0.1"
+dependencies = [
+ "async-trait",
+ "bus_macros",
+ "chrono",
+ "dashmap",
+ "futures",
+ "log",
+ "once_cell",
+ "parking_lot",
+ "postcard",
+ "sea-orm",
+ "serde",
+ "serde_json",
+ "thiserror",
+ "tokio",
+ "tokio-util",
+ "uuid",
 ]
 
 [[package]]

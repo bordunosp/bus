@@ -92,7 +92,7 @@ Add `bus` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-bus = { package = "bus", version = "" }
+bus = { package = "rust_bus", version = "" }
 ctor = "0.4" # Required for automatic handler & pipeline registration
 ```
 
