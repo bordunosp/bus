@@ -2,6 +2,8 @@
 ![Build Status](https://github.com/bordunosp/bus/actions/workflows/rust.yml/badge.svg)
 [![Docs.rs](https://docs.rs/rust_bus/badge.svg)](https://docs.rs/rust_bus)
 [![License](https://img.shields.io/crates/l/rust_bus)](https://crates.io/crates/rust_bus)
+![unsafe-free](https://img.shields.io/badge/unsafe-✗%20no%20unsafe-success)
+![Feature Flags](https://img.shields.io/badge/features-sea--orm%20%7C%20json--payload-blue)
 [![Downloads](https://img.shields.io/crates/d/rust_bus.svg?style=flat-square)](https://crates.io/crates/rust_bus)
 
 

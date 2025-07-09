@@ -1386,7 +1386,7 @@ dependencies = [
 
 [[package]]
 name = "rust_bus"
-version = "1.0.3"
+version = "1.0.4"
 dependencies = [
  "async-trait",
  "bus_macros",

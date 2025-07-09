@@ -1,6 +1,6 @@
 [package]
 name = "rust_bus"
-version = "1.0.3"
+version = "1.0.4"
 edition = "2024"
 readme = "README.md"
 license = "MIT"
