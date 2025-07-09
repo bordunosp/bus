@@ -1,4 +1,5 @@
 [![Crates.io](https://img.shields.io/crates/v/rust_bus.svg)](https://crates.io/crates/rust_bus)
+![Build Status](https://github.com/bordunosp/bus/actions/workflows/rust.yml/badge.svg)
 [![Docs.rs](https://docs.rs/rust_bus/badge.svg)](https://docs.rs/rust_bus)
 [![License](https://img.shields.io/crates/l/rust_bus)](https://crates.io/crates/rust_bus)
 
