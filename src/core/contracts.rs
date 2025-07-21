@@ -27,7 +27,7 @@ where
 }
 
 pub trait IEvent<TError>:
-    serde::Serialize + serde::de::DeserializeOwned + TypeNamed + Clone + Sized + Send + Sync + 'static
+    serde::Serialize + serde::de::DeserializeOwned + TypeNamed + Clone + Send + Sync + 'static
 where
     TError: AnyError,
 {
