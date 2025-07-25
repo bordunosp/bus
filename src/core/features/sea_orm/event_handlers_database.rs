@@ -169,7 +169,7 @@ where
 }
 
 pub(crate) async fn insert_pending_bus_events_txn<E, TError>(
-    db: Option<DatabaseTransaction>,
+    db: Option<&DatabaseTransaction>,
     event: E,
 ) -> Result<(), BusError>
 where
@@ -189,9 +189,14 @@ where
     let payload_bin = postcard::to_allocvec(&event)
         .map_err(|e| BusError::SerializationError(event_type_name.to_string(), e.to_string()))?;
 
-    let txn = match db {
+    let mut local_txn = None;
+    let txn: &DatabaseTransaction = match db {
         Some(txn) => txn,
-        None => get_db_conn()?.begin().await.map_err(BusError::DbErr)?,
+        None => {
+            let created_txn = get_db_conn()?.begin().await.map_err(BusError::DbErr)?;
+            local_txn = Some(created_txn);
+            local_txn.as_ref().unwrap()
+        }
     };
 
     let now = Utc::now().naive_utc();
@@ -214,7 +219,7 @@ where
         };
 
         sql::insert_to_events(
-            &txn,
+            txn,
             BusEvent {
                 id: Uuid::now_v7(),
                 queue_name: event_queue_settings.settings.queue_name.to_string(),
@@ -240,7 +245,10 @@ where
         .await?;
     }
 
-    txn.commit().await.map_err(BusError::DbErr)?;
+    if let Some(txn) = local_txn {
+        txn.commit().await.map_err(BusError::DbErr)?;
+    }
+
     Ok(())
 }
 

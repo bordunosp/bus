@@ -59,7 +59,7 @@ where
 
 #[cfg(any(feature = "sea-orm-postgres", feature = "sea-orm-mysql"))]
 pub async fn publish_txn<TEvent, TError, TConnection>(
-    txn: DatabaseTransaction,
+    txn: &DatabaseTransaction,
     event: TEvent,
     #[cfg(feature = "cancellation-token")] cancellation_token: tokio_util::sync::CancellationToken,
 ) -> Result<(), TError>
