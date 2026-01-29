@@ -31,15 +31,15 @@ pub(crate) async fn get_expires() -> Result<Vec<BusEventJob>, Box<dyn Error + Se
             "#
         ),
         vec![
-            Value::String(Some(Box::new(EventStatusEnum::Processing.to_string()))),
-            Value::ChronoDateTime(Some(Box::new(
+            Value::String(Some(EventStatusEnum::Processing.to_string())),
+            Value::ChronoDateTime(Some(
                 Utc::now().naive_utc() + chrono::Duration::minutes(1),
-            ))),
+            )),
         ],
     );
 
     get_db_conn()?
-        .query_all(query)
+        .query_all_raw(query)
         .await?
         .into_iter()
         .map(|row| {
@@ -69,7 +69,7 @@ pub(crate) async fn get_id_status(
     let table_name = get_queue_config()?.connection().table_name();
 
     get_db_conn()?
-        .query_all(Statement::from_sql_and_values(
+        .query_all_raw(Statement::from_sql_and_values(
             sea_orm::DatabaseBackend::Postgres,
             format!(
                 r#"
@@ -79,7 +79,7 @@ pub(crate) async fn get_id_status(
                 LIMIT 10
                 "#
             ),
-            vec![Value::String(Some(Box::new(status.to_string())))],
+            vec![Value::String(Some(status.to_string()))],
         ))
         .await?
         .into_iter()
@@ -99,10 +99,10 @@ pub(crate) async fn delete(id: Uuid) -> Result<(), Box<dyn Error + Send + Sync>>
     let table_name = get_queue_config()?.connection().table_name();
 
     get_db_conn()?
-        .execute(Statement::from_sql_and_values(
+        .execute_raw(Statement::from_sql_and_values(
             DbBackend::Postgres,
             format!(r#"DELETE FROM {table_name} WHERE id = $1;"#),
-            vec![Value::Uuid(Some(Box::new(id)))],
+            vec![Value::Uuid(Some(id))],
         ))
         .await?;
     Ok(())
@@ -116,7 +116,7 @@ pub(crate) async fn update_scheduled_at(
     let table_name = get_queue_config()?.connection().table_name();
 
     get_db_conn()?
-        .execute(Statement::from_sql_and_values(
+        .execute_raw(Statement::from_sql_and_values(
             DbBackend::Postgres,
             format!(
                 r#"
@@ -131,11 +131,11 @@ pub(crate) async fn update_scheduled_at(
                 "#
             ),
             vec![
-                Value::String(Some(Box::new(EventStatusEnum::Pending.to_string()))),
-                Value::String(Some(Box::new(err.to_string()))),
+                Value::String(Some(EventStatusEnum::Pending.to_string())),
+                Value::String(Some(err.to_string())),
                 Value::ChronoDateTime(None),
-                Value::ChronoDateTime(Some(Box::new(Utc::now().naive_utc() + scheduled_at))),
-                Value::Uuid(Some(Box::new(id))),
+                Value::ChronoDateTime(Some(Utc::now().naive_utc() + scheduled_at)),
+                Value::Uuid(Some(id)),
             ],
         ))
         .await?;
@@ -160,11 +160,11 @@ pub(crate) async fn archive(id: Uuid) -> Result<(), BusError> {
             WHERE id = $1
             "#
         ),
-        vec![Value::Uuid(Some(Box::new(id)))],
+        vec![Value::Uuid(Some(id))],
     );
 
     let row = txn
-        .query_one(select_stmt)
+        .query_one_raw(select_stmt)
         .await?
         .ok_or_else(|| BusError::EventNotFound(id.to_string()))?;
 
@@ -208,27 +208,27 @@ pub(crate) async fn archive(id: Uuid) -> Result<(), BusError> {
             "#
         ),
         vec![
-            Value::Uuid(Some(Box::new(event_archive.id.to_owned()))),
-            Value::String(Some(Box::new(event_archive.queue_name.to_owned()))),
-            Value::String(Some(Box::new(event_archive.type_name_event.to_owned()))),
-            Value::String(Some(Box::new(event_archive.type_name_handler.to_owned()))),
-            Value::String(Some(Box::new(event_archive.status.to_string()))),
+            Value::Uuid(Some(event_archive.id.to_owned())),
+            Value::String(Some(event_archive.queue_name.to_owned())),
+            Value::String(Some(event_archive.type_name_event.to_owned())),
+            Value::String(Some(event_archive.type_name_handler.to_owned())),
+            Value::String(Some(event_archive.status.to_string())),
             payload_json_value,
-            Value::Bytes(Some(Box::new(event_archive.payload_bin.to_owned()))),
-            Value::String(event_archive.latest_error.map(Box::new)),
-            Value::ChronoDateTime(Some(Box::new(event_archive.created_at))),
+            Value::Bytes(Some(event_archive.payload_bin.to_owned())),
+            Value::String(event_archive.latest_error),
+            Value::ChronoDateTime(Some(event_archive.created_at)),
         ],
     );
 
-    txn.execute(insert_stmt).await?;
+    txn.execute_raw(insert_stmt).await?;
 
     let delete_stmt = Statement::from_sql_and_values(
         DbBackend::Postgres,
         format!(r#"DELETE FROM {table_name} WHERE id = $1"#),
-        vec![Value::Uuid(Some(Box::new(id)))],
+        vec![Value::Uuid(Some(id))],
     );
 
-    txn.execute(delete_stmt).await?;
+    txn.execute_raw(delete_stmt).await?;
     txn.commit().await.map_err(BusError::DbErr)?;
     Ok(())
 }
@@ -248,21 +248,21 @@ pub(crate) async fn change_status(
         "#
     );
 
-    let mut values: Vec<Value> = vec![Value::String(Some(Box::new(status.to_string())))];
+    let mut values: Vec<Value> = vec![Value::String(Some(status.to_string()))];
 
     if let Some(ref e) = err {
         sql.push_str(", latest_error = $2 WHERE id = $3");
-        values.push(Value::String(Some(Box::new(e.to_string()))));
-        values.push(Value::Uuid(Some(Box::new(id))));
+        values.push(Value::String(Some(e.to_string())));
+        values.push(Value::Uuid(Some(id)));
     } else {
         sql.push_str(" WHERE id = $2");
-        values.push(Value::Uuid(Some(Box::new(id))));
+        values.push(Value::Uuid(Some(id)));
     }
 
     let query = Statement::from_sql_and_values(DbBackend::Postgres, sql, values);
     let db = get_db_conn()?;
 
-    db.execute(query).await?;
+    db.execute_raw(query).await?;
     Ok(())
 }
 
@@ -309,16 +309,16 @@ pub(crate) async fn get_queues_items(
             "#
         ),
         vec![
-            Value::String(Some(Box::new(queue_config.queue_name().to_string()))),
-            Value::String(Some(Box::new(EventStatusEnum::Pending.to_string()))),
-            Value::ChronoDateTime(Some(Box::new(now))),
+            Value::String(Some(queue_config.queue_name().to_string())),
+            Value::String(Some(EventStatusEnum::Pending.to_string())),
+            Value::ChronoDateTime(Some(now)),
             Value::Int(Some(limit)),
-            Value::String(Some(Box::new(EventStatusEnum::Processing.to_string()))),
+            Value::String(Some(EventStatusEnum::Processing.to_string())),
         ],
     );
 
     let txn = get_db_conn()?.begin().await?;
-    let rows = txn.query_all(query).await?;
+    let rows = txn.query_all_raw(query).await?;
     txn.commit().await?;
 
     rows.into_iter()
@@ -378,28 +378,28 @@ pub(crate) async fn insert_to_events(
             "#
         ),
         vec![
-            Value::Uuid(Some(Box::new(bus_event.id.to_owned()))),
-            Value::String(Some(Box::new(bus_event.queue_name.to_owned()))),
-            Value::String(Some(Box::new(bus_event.type_name_event.to_owned()))),
-            Value::String(Some(Box::new(bus_event.type_name_handler.to_owned()))),
-            Value::String(Some(Box::new(bus_event.status.to_string()))),
+            Value::Uuid(Some(bus_event.id.to_owned())),
+            Value::String(Some(bus_event.queue_name.to_owned())),
+            Value::String(Some(bus_event.type_name_event.to_owned())),
+            Value::String(Some(bus_event.type_name_handler.to_owned())),
+            Value::String(Some(bus_event.status.to_string())),
             payload_json_value,
-            Value::Bytes(Some(Box::new(bus_event.payload_bin.to_owned()))),
+            Value::Bytes(Some(bus_event.payload_bin.to_owned())),
             Value::Int(Some(bus_event.retries_current)),
             Value::Int(Some(bus_event.retries_max)),
-            Value::String(bus_event.latest_error.map(Box::new)),
-            Value::String(Some(Box::new(bus_event.archive_mode.to_string()))),
-            Value::ChronoDateTime(Some(Box::new(bus_event.should_start_at))),
-            Value::ChronoDateTime(bus_event.expires_at.map(Box::new)),
-            Value::String(Some(Box::new(format!(
+            Value::String(bus_event.latest_error),
+            Value::String(Some(bus_event.archive_mode.to_string())),
+            Value::ChronoDateTime(Some(bus_event.should_start_at)),
+            Value::ChronoDateTime(bus_event.expires_at),
+            Value::String(Some(format!(
                 "{} seconds",
                 bus_event.expires_interval.num_seconds()
-            )))),
-            Value::ChronoDateTime(Some(Box::new(bus_event.created_at))),
-            Value::ChronoDateTime(Some(Box::new(bus_event.updated_at))),
+            ))),
+            Value::ChronoDateTime(Some(bus_event.created_at)),
+            Value::ChronoDateTime(Some(bus_event.updated_at)),
         ],
     );
 
-    txn.execute(stmt).await?;
+    txn.execute_raw(stmt).await?;
     Ok(())
 }

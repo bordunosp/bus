@@ -101,7 +101,7 @@ Add `bus` to your `Cargo.toml`:
 
 ```toml
 [dependencies]
-bus = { package = "rust_bus", version = "" }
+bus = { package = "rust_bus", version = "x.x.x" }
 ctor = "0.4" # Required for automatic handler & pipeline registration
 ```
 
