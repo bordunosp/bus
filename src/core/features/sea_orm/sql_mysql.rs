@@ -32,9 +32,7 @@ pub(crate) async fn get_expires() -> Result<Vec<BusEventJob>, Box<dyn Error + Se
         ),
         vec![
             Value::String(Some(EventStatusEnum::Processing.to_string())),
-            Value::ChronoDateTime(Some(
-                Utc::now().naive_utc() + chrono::Duration::minutes(1),
-            )),
+            Value::ChronoDateTime(Some(Utc::now().naive_utc() + chrono::Duration::minutes(1))),
         ],
     );
 
@@ -329,9 +327,8 @@ pub(crate) async fn get_queues_items(
         .collect::<Result<Vec<Uuid>, BusError>>()?;
 
     let placeholders = ids.iter().map(|_| "?").collect::<Vec<_>>().join(", ");
-    let mut update_values: Vec<Value> = vec![Value::String(Some(
-        EventStatusEnum::Processing.to_string(),
-    ))];
+    let mut update_values: Vec<Value> =
+        vec![Value::String(Some(EventStatusEnum::Processing.to_string()))];
     for id in &ids {
         update_values.push(Value::Bytes(Some(id.as_bytes().to_vec())));
     }

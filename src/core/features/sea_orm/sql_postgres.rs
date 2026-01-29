@@ -32,9 +32,7 @@ pub(crate) async fn get_expires() -> Result<Vec<BusEventJob>, Box<dyn Error + Se
         ),
         vec![
             Value::String(Some(EventStatusEnum::Processing.to_string())),
-            Value::ChronoDateTime(Some(
-                Utc::now().naive_utc() + chrono::Duration::minutes(1),
-            )),
+            Value::ChronoDateTime(Some(Utc::now().naive_utc() + chrono::Duration::minutes(1))),
         ],
     );
 
