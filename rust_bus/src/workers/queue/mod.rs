@@ -4,4 +4,4 @@
 // mod worker_failed_tasks_handler;
 // mod workers;
 // mod workers_process;
-pub(crate) mod worker;
+pub mod worker;
