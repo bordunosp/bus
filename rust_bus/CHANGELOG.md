@@ -11,7 +11,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 3 commits contributed to the release.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -22,6 +22,7 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Release rust_bus v3.0.0-alpha.1 ([`49edf0a`](https://github.com/bordunosp/bus/commit/49edf0a2ed91ed62b25c45cde97f6cd15b767718))
     - Release rust_bus v3.0.0-alpha.1 ([`c1de2ad`](https://github.com/bordunosp/bus/commit/c1de2adf07bdd8fb09469ac0b0038658d311667f))
     - Fix pub start ([`4b414b6`](https://github.com/bordunosp/bus/commit/4b414b6d30aa8f79597ccd818f85d81bf8dd0bc1))
 </details>
