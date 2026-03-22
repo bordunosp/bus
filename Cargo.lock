@@ -1937,7 +1937,7 @@ dependencies = [
 
 [[package]]
 name = "rust_bus"
-version = "3.0.3"
+version = "3.0.4"
 dependencies = [
  "chrono",
  "futures",
