@@ -40,6 +40,13 @@ pub async fn start(shutdown_rx: watch::Receiver<()>) -> Result<(), BusError> {
     Ok(())
 }
 
+pub async fn wait_or_shutdown(rx: &mut watch::Receiver<()>, duration: Duration) -> bool {
+    tokio::select! {
+        _ = rx.changed() => true,
+        _ = tokio::time::sleep(duration) => false,
+    }
+}
+
 pub(crate) struct Worker {
     worker_id: Uuid,
     queue_name: String,
@@ -375,14 +382,6 @@ impl Worker {
 
         drop(tx);
         let _ = tokio::join!(consumer_handle, producer_handle);
-    }
-
-    async fn wait_or_shutdown(&self, duration: Duration) -> bool {
-        let mut rx = self.shutdown_rx.clone();
-        tokio::select! {
-            _ = rx.changed() => true,
-            _ = tokio::time::sleep(duration) => false,
-        }
     }
 
     async fn with_db_retry<F, Fut, T>(mut op: F) -> Result<T, BusError>
