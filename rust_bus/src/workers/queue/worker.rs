@@ -12,6 +12,34 @@ use tokio::sync::{Semaphore, mpsc, watch};
 use tokio::task::{JoinHandle, JoinSet};
 use uuid::Uuid;
 
+pub async fn start(shutdown_rx: watch::Receiver<()>) -> Result<(), BusError> {
+    let queues = BusQueueConfiguration::global()?.queues();
+
+    let recovery_rx = shutdown_rx.clone();
+    tokio::spawn(async move {
+        Worker::start_recovery_supervisor(recovery_rx).await;
+    });
+
+    for (queue_name, config) in queues {
+        let name = queue_name.clone();
+        let workers = config.workers as usize;
+        let empty_queue_delay = config.empty_queue_delay;
+        let rx = shutdown_rx.clone();
+
+        #[cfg(feature = "logging")]
+        log::info!("[Bus] Starting worker supervisor for queue: {}", name);
+
+        tokio::spawn(async move {
+            Worker::start_worker_supervisor(&name, workers, empty_queue_delay, rx).await;
+        });
+    }
+
+    #[cfg(feature = "logging")]
+    log::info!("[Bus] System initialized: workers and recovery are running.");
+
+    Ok(())
+}
+
 pub(crate) struct Worker {
     worker_id: Uuid,
     queue_name: String,
@@ -34,34 +62,6 @@ impl Worker {
             empty_queue_delay,
             shutdown_rx,
         }
-    }
-
-    pub async fn start(&self, shutdown_rx: watch::Receiver<()>) -> Result<(), BusError> {
-        let queues = BusQueueConfiguration::global()?.queues();
-
-        let recovery_rx = shutdown_rx.clone();
-        tokio::spawn(async move {
-            Worker::start_recovery_supervisor(recovery_rx).await;
-        });
-
-        for (queue_name, config) in queues {
-            let name = queue_name.clone();
-            let workers = config.workers as usize;
-            let empty_queue_delay = config.empty_queue_delay;
-            let rx = shutdown_rx.clone();
-
-            #[cfg(feature = "logging")]
-            log::info!("[Bus] Starting worker supervisor for queue: {}", name);
-
-            tokio::spawn(async move {
-                Worker::start_worker_supervisor(&name, workers, empty_queue_delay, rx).await;
-            });
-        }
-
-        #[cfg(feature = "logging")]
-        log::info!("[Bus] System initialized: workers and recovery are running.");
-
-        Ok(())
     }
 
     async fn start_recovery_supervisor(shutdown_rx: watch::Receiver<()>) {
