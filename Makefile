@@ -82,4 +82,4 @@ check:
 
 publish:
 	@if ! command -v cargo-smart-release > /dev/null; then cargo install cargo-smart-release; fi
-	cargo smart-release --execute --no-changelog-preview --allow-dirty rust_bus
+	cargo smart-release --execute --allow-fully-generated-changelogs --allow-dirty rust_bus
