@@ -1,0 +1,52 @@
+services:
+#  postgres://user:password@localhost:2345/test_me
+  bus_postgres_test:
+    image: postgres:18.3
+    container_name: bus_postgres_test
+    environment:
+      POSTGRES_USER: user
+      POSTGRES_PASSWORD: password
+      POSTGRES_DB: test_me
+    ports:
+      - "2345:5432"
+    volumes:
+      - ./migrations/postgres.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    tmpfs:
+      - /var/lib/postgresql
+    healthcheck:
+      test: [ "CMD-SHELL", "pg_isready -U user -d test_me" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bus_net
+
+#  mysql://user:password@localhost:6033/test_me
+  bus_mysql_test:
+    image: mysql:9.6.0
+    container_name: bus_mysql_test
+    environment:
+      MYSQL_ROOT_PASSWORD: root_password
+      MYSQL_DATABASE: test_me
+      MYSQL_USER: user
+      MYSQL_PASSWORD: password
+    ports:
+      - "6033:3306"
+    volumes:
+      - ./migrations/mysql.sql:/docker-entrypoint-initdb.d/init.sql:ro
+    tmpfs:
+      - /var/lib/mysql
+#    command: --default-authentication-plugin=mysql_native_password
+    healthcheck:
+      test: [ "CMD-SHELL", "mysqladmin ping -h localhost -u user -ppassword" ]
+      interval: 5s
+      timeout: 5s
+      retries: 5
+    networks:
+      - bus_net
+
+networks:
+  bus_net:
+    driver: bridge
+    name: bus_net
+

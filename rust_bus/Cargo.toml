@@ -1,0 +1,85 @@
+[package]
+name = "rust_bus"
+version.workspace = true
+edition.workspace = true
+readme.workspace = true
+license.workspace = true
+authors.workspace = true
+repository.workspace = true
+description.workspace = true
+keywords.workspace = true
+categories.workspace = true
+
+[dependencies]
+rust_bus_macros = { path = "../rust_bus_macros", version = "3.0.0" }
+
+chrono = "0.4"
+serde = { version = "1.0", features = ["derive"] }
+uuid = { version = "1.22", features = ["v7", "zerocopy", "fast-rng", "bytemuck", "std", "atomic", "serde"] }
+inventory = "0.3"
+once_cell = "1.21"
+serde_json = { version = "1.0" }
+tokio = { version = "1.50", features = ["rt", "macros"] }
+rand = "0.10"
+futures = "0.3"
+
+log = { version = "0.4", optional = true }
+twox-hash = { version = "2.1", optional = true, features = ["xxhash3_64", "xxhash3_128"] }
+sea-orm = { version = "2.0.0-rc", optional = true, default-features = false, features = [
+    "runtime-tokio-rustls",
+    "with-json",
+    "with-uuid",
+    "with-chrono",
+    "macros",
+] }
+sqlx = { version = "0.8", optional = true, default-features = false, features = [
+    "json", "chrono", "uuid", "macros", "runtime-tokio-rustls"
+] }
+
+
+
+[dev-dependencies]
+tokio = { version = "1.50", features = ["full"] }
+
+
+[features]
+default = [
+    "logging",
+    "context",
+]
+
+logging = ["dep:log"]
+
+sea-orm-postgres = [
+    "sea-orm/sqlx-postgres",
+    "_db_any",
+    "_db_sea_orm",
+    "_db_postgres",
+]
+sea-orm-mysql = [
+    "sea-orm/sqlx-mysql",
+    "_db_any",
+    "_db_mysql",
+    "_db_sea_orm",
+]
+sqlx-postgres = [
+    "_db_any",
+    "_db_sqlx",
+    "_db_postgres",
+    "sqlx/postgres",
+]
+sqlx-mysql = [
+    "_db_any",
+    "_db_sqlx",
+    "_db_mysql",
+    "sqlx/mysql",
+]
+context = []
+
+_db_any = [
+    "dep:twox-hash",
+]
+_db_sqlx = ["dep:sqlx"]
+_db_sea_orm = ["dep:sea-orm"]
+_db_postgres = []
+_db_mysql = []
