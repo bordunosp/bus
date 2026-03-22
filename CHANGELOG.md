@@ -2,9 +2,3 @@
 
 ### Added
 - Initial alpha release
-
-### Changed
-- ...
-
-### Fixed
-- ...
