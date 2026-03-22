@@ -1,6 +1,6 @@
 [package]
 name = "rust_bus"
-version.workspace = true
+version = "3.0.0-alpha.1"
 edition.workspace = true
 readme.workspace = true
 license.workspace = true
