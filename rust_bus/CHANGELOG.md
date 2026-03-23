@@ -5,7 +5,7 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v3.0.4 (2026-03-22)
+## v3.0.5 (2026-03-23)
 
 ### Commit Statistics
 
@@ -22,6 +22,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - 3.0.5 ([`ba773c5`](https://github.com/bordunosp/bus/commit/ba773c51aa6a3964d180a70ae1c1baa62f1b7dd0))
+</details>
+
+## v3.0.4 (2026-03-22)
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Release rust_bus v3.0.4 ([`7490b59`](https://github.com/bordunosp/bus/commit/7490b59899d1cd3ffaf7ca69355af57a25b04c45))
     - Public wait_or_shutdown ([`14b7dd9`](https://github.com/bordunosp/bus/commit/14b7dd94fe6603513c31545da10492956f32f92d))
 </details>
 
