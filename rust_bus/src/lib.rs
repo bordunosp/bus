@@ -9,7 +9,7 @@ mod tests;
 
 pub mod bus;
 pub mod contracts;
-mod dispatch;
+pub mod dispatch;
 pub mod error;
 mod initialization;
 pub(crate) mod sql;

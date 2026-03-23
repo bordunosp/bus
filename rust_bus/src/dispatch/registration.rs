@@ -8,38 +8,38 @@ use crate::contracts::database_unique::Unique;
 #[cfg(feature = "_db_any")]
 use crate::contracts::enums::ScheduleIn;
 
-pub(crate) type RawPtr = usize;
+pub type RawPtr = usize;
 
-pub(crate) type BoxedBusFuture = Pin<
+pub type BoxedBusFuture = Pin<
     Box<dyn Future<Output = Result<(), Box<dyn std::error::Error + Send + Sync>>> + Send + 'static>,
 >;
 
 #[allow(dead_code)]
 #[cfg(feature = "_db_any")]
-pub(crate) type DatabaseHandlerFn =
+pub type DatabaseHandlerFn =
     fn(db: RawPtr, event: &serde_json::Value, meta: RawPtr) -> BoxedBusFuture;
 
 #[cfg(feature = "context")]
-mod types {
+pub mod types {
     use crate::contracts::ctx::RawContext;
     use crate::dispatch::registration::{BoxedBusFuture, RawPtr};
 
-    pub(crate) type MemoryHandlerFn = fn(ctx: RawContext, event: RawPtr) -> BoxedBusFuture;
+    pub type MemoryHandlerFn = fn(ctx: RawContext, event: RawPtr) -> BoxedBusFuture;
 }
 
 #[cfg(not(feature = "context"))]
-mod types {
+pub mod types {
     use crate::dispatch::registration::{BoxedBusFuture, RawPtr};
 
     #[cfg(feature = "_db_any")]
-    pub(crate) type MemoryHandlerFn =
+    pub type MemoryHandlerFn =
         fn(txn: RawPtr, event: RawPtr, meta: RawPtr) -> BoxedBusFuture;
 
     #[cfg(not(feature = "_db_any"))]
-    pub(crate) type MemoryHandlerFn = fn(event: RawPtr, meta: RawPtr) -> BoxedBusFuture;
+    pub type MemoryHandlerFn = fn(event: RawPtr, meta: RawPtr) -> BoxedBusFuture;
 }
 
-pub(crate) use types::*;
+pub use types::*;
 
 #[allow(dead_code)]
 pub struct EventHandlerRegistration {
@@ -70,16 +70,16 @@ pub struct EventDatabaseHandlerRegistration {
 #[cfg(feature = "_db_any")]
 inventory::collect!(EventDatabaseHandlerRegistration);
 
-pub(crate) static MEMORY_HANDLERS: OnceCell<
+pub static MEMORY_HANDLERS: OnceCell<
     HashMap<&'static str, Vec<&'static EventHandlerRegistration>>,
 > = OnceCell::new();
 
 #[cfg(feature = "_db_any")]
-pub(crate) static DATABASE_HANDLERS: OnceCell<
+pub static DATABASE_HANDLERS: OnceCell<
     HashMap<&'static str, Vec<&'static EventDatabaseHandlerRegistration>>,
 > = OnceCell::new();
 
 #[cfg(feature = "_db_any")]
-pub(crate) static DATABASE_HANDLERS_BY_HASH: OnceCell<
+pub static DATABASE_HANDLERS_BY_HASH: OnceCell<
     HashMap<i64, &'static EventDatabaseHandlerRegistration>,
 > = OnceCell::new();

@@ -144,13 +144,13 @@ pub struct AppContext<'a> {
 2. Implement
 
 ```rust
-IBusContextRustimpl<'a > IBusContext<'a > for AppContext<'a > {
-    fn metadata( & self ) -> & BusMetadata {
-        & self.metadata
+impl<'a > IBusContext<'a > for AppContext<'a > {
+    fn metadata(&self) -> &BusMetadata {
+        &self.metadata
     }
 
     // Required if you use DB features
-    fn txn( & self ) -> & 'a DatabaseTransaction {
+    fn txn(& self) -> &'a DatabaseTransaction {
         self.txn
     }
 }
