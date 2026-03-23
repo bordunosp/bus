@@ -1,4 +1,4 @@
-# 🚌 rust_bus — Lightweight, flexible, and production-ready **Event Bus** for Rust.
+# 🚌 rust_bus — Lightweight, flexible, and production-ready **Event Bus** for Rust
 
 ---
 
@@ -7,8 +7,9 @@
 In modern software architecture, you often need to decouple your business logic from side effects (like sending emails,
 processing images, or updating external APIs).
 
-`rust_bus` acts as a **mediator**. Instead of calling a function directly, you dispatch an **Event**. The Bus then
-ensures that all registered **Handlers** for that event are executed.
+`rust_bus` a guarantee that a task will be completed even if the server restarts or a network error occurs.
+
+Instead of executing logic immediately, you **enqueue** a job (Event) into a database-backed queue. `rust_bus` workers then pick up these jobs asynchronously, handling retries, timeouts, and concurrency limits automatically.
 
 ## 🚀 How it Works
 
