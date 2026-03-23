@@ -127,7 +127,7 @@ pub struct SendEmailHandler;
 
 #[BusEventHandlerDatabase]
 impl IEventHandlerDatabase<UserRegisteredEvent> for SendEmailHandler {
-    const QUEUE: &'static str = "email";
+    const QUEUE: &'static str = "emails";
 
     async fn handle(
         &self,
@@ -172,7 +172,7 @@ pub struct SendEmailHandler;
 
 #[BusEventHandlerDatabase]
 impl IEventHandlerDatabase<UserRegisteredEvent> for SendEmailHandler {
-    const QUEUE: &'static str = "email";
+    const QUEUE: &'static str = "emails";
     const PRIORITY: u32 = 10;
     const MAX_ATTEMPTS: Option<u32> = Some(10);
     const EXECUTION_TIMEOUT: Option<chrono::Duration> = Some(chrono::Duration::minutes(30));
