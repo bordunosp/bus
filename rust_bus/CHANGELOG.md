@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v3.0.5 (2026-03-23)
+## v3.0.6 (2026-03-23)
 
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
- - 1 commit contributed to the release.
+ - 2 commits contributed to the release.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -22,6 +22,28 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Doc ([`55f5d96`](https://github.com/bordunosp/bus/commit/55f5d96a05eb8b5ba754019a06470c13ff70d4c0))
+    - README.md ([`33d358d`](https://github.com/bordunosp/bus/commit/33d358d7d6c6c7b264d19eec9c3f61b0ebfb0aa1))
+</details>
+
+## v3.0.5 (2026-03-23)
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 2 commits contributed to the release.
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Release rust_bus v3.0.5 ([`d96e0f7`](https://github.com/bordunosp/bus/commit/d96e0f79780e639c43df5e59ebafd2c6b41e7bd7))
     - 3.0.5 ([`ba773c5`](https://github.com/bordunosp/bus/commit/ba773c51aa6a3964d180a70ae1c1baa62f1b7dd0))
 </details>
 
