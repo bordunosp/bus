@@ -116,13 +116,13 @@ client).
 
 | Topic                      | File                                                                                                    |
 |:---------------------------|:--------------------------------------------------------------------------------------------------------|
-| 📣 Events (in-memory)      | [event.md](https://github.com/bordunosp/bus/blob/master/doc/event.md)                                   |
-| 🐘️ Events SeaOrm Postgres | [event_sea_orm_postgres.md](https://github.com/bordunosp/bus/blob/master/doc/event_sea_orm_postgres.md) |
-| 🐬️ Events SeaOrm Mysql    | [event_sea_orm_mysql.md](https://github.com/bordunosp/bus/blob/master/doc/event_sea_orm_mysql.md)       |
-| 🐘️ Events sqlx Postgres   | [event_sqlx_postgres.md](https://github.com/bordunosp/bus/blob/master/doc/event_sqlx_postgres.md)       |
-| 🐬️ Events sqlx Mysql      | [event_sqlx_mysql.md](https://github.com/bordunosp/bus/blob/master/doc/event_sqlx_mysql.md)             |
-| 🧬️ Context                | [context.md](https://github.com/bordunosp/bus/blob/master/doc/context.md)                               |
-| 🏗️ Migrations             | bus app folder [migration](https://github.com/bordunosp/bus/blob/master/migration)                      |
+| 📣 Events (in-memory)      | [event.md](https://github.com/bordunosp/bus/blob/main/doc/event.md)                                   |
+| 🐘️ Events SeaOrm Postgres | [event_sea_orm_postgres.md](https://github.com/bordunosp/bus/blob/main/doc/event_sea_orm_postgres.md) |
+| 🐬️ Events SeaOrm Mysql    | [event_sea_orm_mysql.md](https://github.com/bordunosp/bus/blob/main/doc/event_sea_orm_mysql.md)       |
+| 🐘️ Events sqlx Postgres   | [event_sqlx_postgres.md](https://github.com/bordunosp/bus/blob/main/doc/event_sqlx_postgres.md)       |
+| 🐬️ Events sqlx Mysql      | [event_sqlx_mysql.md](https://github.com/bordunosp/bus/blob/main/doc/event_sqlx_mysql.md)             |
+| 🧬️ Context                | [context.md](https://github.com/bordunosp/bus/blob/main/doc/context.md)                               |
+| 🏗️ Migrations             | bus app folder [migration](https://github.com/bordunosp/bus/blob/main/migration)                      |
 
 ---
 
