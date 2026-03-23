@@ -4,7 +4,6 @@
 ![Feature Flags](https://img.shields.io/badge/features-SeaORM%20%7C%20SQLx%20%7C%20Postgres%20%7C%20MySQL-blue)
 [![Downloads](https://img.shields.io/crates/d/rust_bus.svg?style=flat-square)](https://crates.io/crates/rust_bus)
 
-
 # 🚌 rust_bus — Lightweight, flexible, and production-ready **Event Bus** for Rust
 
 ---
@@ -16,7 +15,8 @@ processing images, or updating external APIs).
 
 `rust_bus` a guarantee that a task will be completed even if the server restarts or a network error occurs.
 
-Instead of executing logic immediately, you **enqueue** a job (Event) into a database-backed queue. `rust_bus` workers then pick up these jobs asynchronously, handling retries, timeouts, and concurrency limits automatically.
+Instead of executing logic immediately, you **enqueue** a job (Event) into a database-backed queue. `rust_bus` workers
+then pick up these jobs asynchronously, handling retries, timeouts, and concurrency limits automatically.
 
 ## 🚀 How it Works
 
@@ -114,8 +114,8 @@ client).
 
 # 📚 Documentation Index
 
-| Topic                      | File                                                                                                    |
-|:---------------------------|:--------------------------------------------------------------------------------------------------------|
+| Topic                      | File                                                                                                  |
+|:---------------------------|:------------------------------------------------------------------------------------------------------|
 | 📣 Events (in-memory)      | [event.md](https://github.com/bordunosp/bus/blob/main/doc/event.md)                                   |
 | 🐘️ Events SeaOrm Postgres | [event_sea_orm_postgres.md](https://github.com/bordunosp/bus/blob/main/doc/event_sea_orm_postgres.md) |
 | 🐬️ Events SeaOrm Mysql    | [event_sea_orm_mysql.md](https://github.com/bordunosp/bus/blob/main/doc/event_sea_orm_mysql.md)       |
