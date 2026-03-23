@@ -70,6 +70,7 @@ async fn main() {
 ```rust
 use rust_bus::contracts::meta::BusMetadata;
 use rust_bus::{bus, BusEvent, BusEventHandler};
+use rust_bus::workers::configuration::BusQueueConfigurationBuilder;
 
 #[BusEvent]
 pub struct UserRegisteredEvent {
@@ -88,10 +89,12 @@ async fn on_user_created(
 
 #[tokio::main]
 async fn main() {
+    let pool = sea_orm::ConnectOptions::new("database_url").clone();
+    
     // Automatically registers all handlers and events in the project
-    rust_bus::init().await.unwrap();
+    let bus_cfg = BusQueueConfigurationBuilder::default().connection(pool);
+    rust_bus::init(bus_cfg).await.unwrap();
 
-    let pool = /** connect to SeaOrm */;
     let txn = pool.begin().await.unwrap();
 
     let event = UserRegisteredEvent{ 
@@ -113,6 +116,7 @@ async fn main() {
 ```rust
 use rust_bus::contracts::meta::BusMetadata;
 use rust_bus::{bus, BusEvent, BusEventHandler};
+use rust_bus::workers::configuration::BusQueueConfigurationBuilder;
 
 #[BusEvent]
 pub struct UserRegisteredEvent {
@@ -131,10 +135,12 @@ async fn on_user_created(
 
 #[tokio::main]
 async fn main() {
+    let pool = sqlx::postgres::PgPoolOptions::new().connect("db_url").await.unwrap();
+    
     // Automatically registers all handlers and events in the project
-    rust_bus::init().await.unwrap();
+    let bus_cfg = BusQueueConfigurationBuilder::default().connection(pool);
+    rust_bus::init(bus_cfg).await.unwrap();
 
-    let pool = /** connect to SQLX */;
     let mut txn = pool.begin().await.unwrap();
 
     let event = UserRegisteredEvent{ 
@@ -151,11 +157,12 @@ async fn main() {
 
 ---
 
-## 🚀🐘 No Context + SQLX Mysql
+## 🚀🐬 No Context + SQLX Mysql
 
 ```rust
 use rust_bus::contracts::meta::BusMetadata;
 use rust_bus::{bus, BusEvent, BusEventHandler};
+use rust_bus::workers::configuration::BusQueueConfigurationBuilder;
 
 #[BusEvent]
 pub struct UserRegisteredEvent {
@@ -174,10 +181,12 @@ async fn on_user_created(
 
 #[tokio::main]
 async fn main() {
+    let pool = sqlx::mysql::MySqlPoolOptions::new().connect("db_url").await.unwrap();
+    
     // Automatically registers all handlers and events in the project
-    rust_bus::init().await.unwrap();
+    let bus_cfg = BusQueueConfigurationBuilder::default().connection(pool);
+    rust_bus::init(bus_cfg).await.unwrap();
 
-    let pool = /** connect to SQLX */;
     let mut txn = pool.begin().await.unwrap();
 
     let event = UserRegisteredEvent{ 
@@ -198,6 +207,7 @@ async fn main() {
 ```rust
 use rust_bus::contracts::meta::BusMetadata;
 use rust_bus::{bus, BusEvent, BusEventHandler, ExampleBusContext};
+use rust_bus::workers::configuration::BusQueueConfigurationBuilder;
 
 #[BusEvent]
 pub struct UserRegisteredEvent {
@@ -236,6 +246,7 @@ async fn main() {
 ```rust
 use rust_bus::contracts::meta::BusMetadata;
 use rust_bus::{bus, BusEvent, BusEventHandler, ExampleBusContext};
+use rust_bus::workers::configuration::BusQueueConfigurationBuilder;
 
 #[BusEvent]
 pub struct UserRegisteredEvent {
@@ -253,10 +264,11 @@ async fn on_user_created(
 
 #[tokio::main]
 async fn main() {
+    let pool = sea_orm::ConnectOptions::new("database_url").clone();
     // Automatically registers all handlers and events in the project
-    rust_bus::init().await.unwrap();
+    let bus_cfg = BusQueueConfigurationBuilder::default().connection(pool);
+    rust_bus::init(bus_cfg).await.unwrap();
 
-    let pool = /** connect to SeaOrm */;
     let mut txn = pool.begin().await.unwrap();
     let ctx = ExampleBusContext::new(&txn, BusMetadata::default());
 
@@ -278,6 +290,7 @@ async fn main() {
 ```rust
 use rust_bus::contracts::meta::BusMetadata;
 use rust_bus::{bus, BusEvent, BusEventHandler, ExampleBusContext};
+use rust_bus::workers::configuration::BusQueueConfigurationBuilder;
 
 #[BusEvent]
 pub struct UserRegisteredEvent {
@@ -295,10 +308,25 @@ async fn on_user_created(
 
 #[tokio::main]
 async fn main() {
-    // Automatically registers all handlers and events in the project
-    rust_bus::init().await.unwrap();
+    #[cfg(feature = "sqlx-postgres")]
+    let pool = sqlx::postgres::PgPoolOptions::new()
+        .max_connections(10)
+        .connect("db_url")
+        .await
+        .unwrap();
 
-    let pool = /** connect to SQLX */;
+    #[cfg(feature = "sqlx-mysql")]
+    let pool = sqlx::mysql::MySqlPoolOptions::new()
+        .max_connections(10)
+        .connect("db_url")
+        .await
+        .unwrap();
+
+    let bus_cfg = BusQueueConfigurationBuilder::default().connection(pool);
+    
+    // Automatically registers all handlers and events in the project
+    rust_bus::init(bus_cfg).await.unwrap();
+
     let mut txn = pool.begin().await.unwrap();
     let mut ctx = ExampleBusContext::new(&mut txn, BusMetadata::default());
 
@@ -311,5 +339,3 @@ async fn main() {
     txn.commit().await.unwrap();
 }
 ```
-
-

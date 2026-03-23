@@ -78,7 +78,7 @@ pub async fn init(
 
         #[cfg(feature = "logging")]
         log::info!(
-            "Rust Bus initialized: Memory [E: {}, H: {}], DB [E: {}, H: {}].",
+            "Rust Bus initialized: Memory [Events: {}, Handlers: {}], DB [Events: {}, Handlers: {}].",
             _mem_events,
             _mem_handlers,
             _db_events,
@@ -88,7 +88,7 @@ pub async fn init(
 
     #[cfg(all(not(feature = "_db_any"), feature = "logging"))]
     log::info!(
-        "Rust Bus initialized: Memory [E: {}, H: {}]. DB disabled.",
+        "Rust Bus initialized: Memory [Events: {}, Handlers: {}]. DB disabled.",
         _mem_events,
         _mem_handlers
     );
