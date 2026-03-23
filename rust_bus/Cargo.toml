@@ -45,7 +45,6 @@ tokio = { version = "1.50", features = ["full"] }
 [features]
 default = [
     "logging",
-    "context",
 ]
 
 logging = ["dep:log"]

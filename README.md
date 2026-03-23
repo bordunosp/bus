@@ -1,7 +1,7 @@
 [![Crates.io](https://img.shields.io/crates/v/rust_bus.svg)](https://crates.io/crates/rust_bus)
 [![Docs.rs](https://docs.rs/rust_bus/badge.svg)](https://docs.rs/rust_bus)
 [![License](https://img.shields.io/crates/l/rust_bus)](https://crates.io/crates/rust_bus)
-![Feature Flags](https://img.shields.io/badge/features-sea--orm%20%7C%20json--payload-blue)
+![Feature Flags](https://img.shields.io/badge/features-SeaORM%20%7C%20SQLx%20%7C%20Postgres%20%7C%20MySQL-blue)
 [![Downloads](https://img.shields.io/crates/d/rust_bus.svg?style=flat-square)](https://crates.io/crates/rust_bus)
 
 
