@@ -114,12 +114,12 @@ client).
 
 # 📚 Documentation Index
 
-| Topic                              | File                                                                                          |
-|:-----------------------------------|:----------------------------------------------------------------------------------------------|
-| 📣 Events (in-memory)              | [event.md](https://github.com/bordunosp/bus/blob/main/doc/event.md)                           |
-| 🐬🐘️ Events Persistent (DataBase) | [event_sea_orm_postgres.md](https://github.com/bordunosp/bus/blob/main/doc/event_database.md) |
-| 🧬️ Context                        | [context.md](https://github.com/bordunosp/bus/blob/main/doc/context.md)                       |
-| 🏗️ Migrations                     | bus app folder [migration](https://github.com/bordunosp/bus/blob/main/migration)              |
+| Topic                              | File                                                                                  |
+|:-----------------------------------|:--------------------------------------------------------------------------------------|
+| 📣 Events (in-memory)              | [event.md](https://github.com/bordunosp/bus/blob/main/doc/event.md)                   |
+| 🐬🐘️ Events Persistent (DataBase) | [event_database.md](https://github.com/bordunosp/bus/blob/main/doc/event_database.md) |
+| 🧬️ Context                        | [context.md](https://github.com/bordunosp/bus/blob/main/doc/context.md)               |
+| 🏗️ Migrations                     | bus app folder [migration](https://github.com/bordunosp/bus/blob/main/migration)      |
 
 ---
 
