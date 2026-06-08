@@ -1,4 +1,5 @@
 #cargo install cargo-all-features
+#cargo install --force --locked cargo-nextest
 
 
 YELLOW := \033[1;33m

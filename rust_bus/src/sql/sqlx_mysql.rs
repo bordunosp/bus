@@ -6,6 +6,8 @@ use crate::workers::configuration::BusQueueConfiguration;
 use chrono::Utc;
 use futures::future::join_all;
 use serde_json::Value;
+use sqlx::MySql;
+use sqlx::QueryBuilder;
 use sqlx::{FromRow, Row, mysql::MySqlRow};
 use uuid::Uuid;
 
@@ -68,19 +70,19 @@ pub(crate) async fn fetch_jobs(queue_name: &str, limit: usize) -> Result<Vec<Bus
         return Ok(vec![]);
     }
 
-    let ids: Vec<[u8; 16]> = jobs.iter().map(|j| *j.id.as_bytes()).collect();
+    let mut query_builder: QueryBuilder<MySql> =
+        QueryBuilder::new("UPDATE bus_jobs SET state = 'executing', attempted_at = ");
 
-    let sql_update = format!(
-        "UPDATE bus_jobs SET state = 'executing', attempted_at = ?, attempt = attempt + 1 WHERE id IN ({})",
-        ids.iter().map(|_| "?").collect::<Vec<_>>().join(",")
-    );
+    query_builder.push_bind(Utc::now());
+    query_builder.push(", attempt = attempt + 1 WHERE id IN (");
 
-    let mut query = sqlx::query(&sql_update);
-    query = query.bind(Utc::now());
-    for id in &ids {
-        query = query.bind(&id[..]);
+    let mut separated = query_builder.separated(", ");
+    for id in jobs.iter().map(|j| j.id.as_bytes()) {
+        separated.push_bind(&id[..]);
     }
-    query.execute(&mut *txn).await?;
+    separated.push_unseparated(")");
+
+    query_builder.build().execute(&mut *txn).await?;
     txn.commit().await?;
     Ok(jobs)
 }

@@ -32,14 +32,14 @@ sea-orm = { version = "2.0.0-rc", optional = true, default-features = false, fea
     "with-chrono",
     "macros",
 ] }
-sqlx = { version = "0.8", optional = true, default-features = false, features = [
-    "json", "chrono", "uuid", "macros", "runtime-tokio-rustls"
+sqlx = { version = "0.9", optional = true, default-features = false, features = [
+    "json", "chrono", "uuid", "macros", "runtime-tokio", "tls-rustls"
 ] }
 
 
 
 [dev-dependencies]
-tokio = { version = "1.50", features = ["full"] }
+tokio = { version = "1.52", features = ["full"] }
 
 
 [features]

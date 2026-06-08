@@ -32,8 +32,7 @@ pub mod types {
     use crate::dispatch::registration::{BoxedBusFuture, RawPtr};
 
     #[cfg(feature = "_db_any")]
-    pub type MemoryHandlerFn =
-        fn(txn: RawPtr, event: RawPtr, meta: RawPtr) -> BoxedBusFuture;
+    pub type MemoryHandlerFn = fn(txn: RawPtr, event: RawPtr, meta: RawPtr) -> BoxedBusFuture;
 
     #[cfg(not(feature = "_db_any"))]
     pub type MemoryHandlerFn = fn(event: RawPtr, meta: RawPtr) -> BoxedBusFuture;
