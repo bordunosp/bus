@@ -5,13 +5,13 @@ All notable changes to this project will be documented in this file.
 The format is based on [Keep a Changelog](https://keepachangelog.com/en/1.0.0/),
 and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0.html).
 
-## v3.0.6 (2026-03-23)
+## v3.0.7 (2026-06-08)
 
 ### Commit Statistics
 
 <csr-read-only-do-not-edit/>
 
- - 2 commits contributed to the release.
+ - 1 commit contributed to the release.
  - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
  - 0 issues like '(#ID)' were seen in commit messages
 
@@ -22,6 +22,27 @@ and this project adheres to [Semantic Versioning](https://semver.org/spec/v2.0.0
 <details><summary>view details</summary>
 
  * **Uncategorized**
+    - Sqlx 0.9 ([`434f632`](https://github.com/bordunosp/bus/commit/434f632ebb9da7539f7c9b2926900780b5b39abc))
+</details>
+
+## v3.0.6 (2026-03-23)
+
+### Commit Statistics
+
+<csr-read-only-do-not-edit/>
+
+ - 3 commits contributed to the release.
+ - 0 commits were understood as [conventional](https://www.conventionalcommits.org).
+ - 0 issues like '(#ID)' were seen in commit messages
+
+### Commit Details
+
+<csr-read-only-do-not-edit/>
+
+<details><summary>view details</summary>
+
+ * **Uncategorized**
+    - Release rust_bus v3.0.6 ([`00729f4`](https://github.com/bordunosp/bus/commit/00729f40617030fa1b14c87d8ba44024560889db))
     - Doc ([`55f5d96`](https://github.com/bordunosp/bus/commit/55f5d96a05eb8b5ba754019a06470c13ff70d4c0))
     - README.md ([`33d358d`](https://github.com/bordunosp/bus/commit/33d358d7d6c6c7b264d19eec9c3f61b0ebfb0aa1))
 </details>
